@@ -1,11 +1,10 @@
 import bz2
-import json
 import re
 from pathlib import Path
-from threading import Thread
 from time import sleep
 from typing import Dict, Optional, Union
 
+import pandas as pd
 import wikitextparser as wtp
 from html2text import html2text as htt
 from tqdm import tqdm  # for progress tracking
@@ -22,7 +21,7 @@ def dewiki(text: str) -> str:
     """
     text = wtp.parse(text).plain_text()  # wiki to plaintext
     text = htt(text)  # remove any HTML
-    text = text.replace("\\n", " ")  # replace newlines
+    text = text.replace("\n", " ")  # replace newlines
     text = re.sub(r"\s+", " ", text)  # replace excess whitespace
     return text
 
@@ -58,18 +57,50 @@ def analyze_chunk(text: str) -> Optional[Dict[str, str]]:
         return None
 
 
-def save_article(article: str, savedir: Path) -> None:
-    """Save a processed article to a JSON file.
+def process_file_text(filename: Union[str, Path], savepath: Union[str, Path]) -> None:
+    """Process a Wikipedia XML dump file and save articles into a Parquet file.
 
     Args:
-        article: Raw XML chunk containing article content
-        savedir: Directory path where the JSON file should be saved
+        filename: Path to the bzip2 compressed XML dump file
+        savepath: Path to the output Parquet file
     """
-    doc = analyze_chunk(article)
-    if doc:
-        filename = savedir / f"{doc['id']}.json"
-        with open(filename, "w", encoding="utf-8") as outfile:
-            json.dump(doc, outfile, sort_keys=True, indent=1, ensure_ascii=False)
+    # Convert to Path objects
+    filename = Path(filename)
+    savepath = Path(savepath)
+
+    # Ensure save directory exists
+    savepath.parent.mkdir(parents=True, exist_ok=True)
+
+    # Count total number of articles (pages) in the file
+    total_pages = count_pages_in_file(filename)
+    print(f"Total unique articles to process: {total_pages}")
+    sleep(0.1)  # Allow print to be shown before tqdm
+
+    articles = []
+    article = ""
+
+    with bz2.open(filename, "rt", encoding="utf-8") as infile:
+        # Initialize tqdm for progress tracking
+        with tqdm(
+            total=total_pages, desc="Processing articles", unit="article"
+        ) as pbar:
+            for line in infile:
+                if "<page>" in line:
+                    article = ""
+                elif "</page>" in line:  # end of article
+                    doc = analyze_chunk(article)
+                    if doc:
+                        articles.append(doc)
+                    pbar.update(1)  # Update progress bar for each processed article
+                else:
+                    article += line
+
+    # Convert list of articles to a DataFrame
+    df = pd.DataFrame(articles)
+
+    # Save DataFrame as Parquet file
+    df.to_parquet(savepath, index=False)
+    print(f"Processed data saved to {savepath}")
 
 
 def count_pages_in_file(filename: Union[str, Path]) -> int:
@@ -87,38 +118,3 @@ def count_pages_in_file(filename: Union[str, Path]) -> int:
             if "<page>" in line:
                 page_count += 1
     return page_count
-
-
-def process_file_text(filename: Union[str, Path], savedir: Union[str, Path]) -> None:
-    """Process a Wikipedia XML dump file and save articles as individual JSON files.
-
-    Args:
-        filename: Path to the bzip2 compressed XML dump file
-        savedir: Directory path where processed articles should be saved
-    """
-    # Convert to Path objects
-    filename = Path(filename)
-    savedir = Path(savedir)
-
-    # Ensure save directory exists
-    savedir.mkdir(parents=True, exist_ok=True)
-
-    # Count total number of articles (pages) in the file
-    total_pages = count_pages_in_file(filename)
-    print(f"Total unique articles to process: {total_pages}")
-    sleep(0.1)  # Allow print to be shown before tqdm
-
-    article = ""
-    with bz2.open(filename, "rt", encoding="utf-8") as infile:
-        # Initialize tqdm for progress tracking
-        with tqdm(
-            total=total_pages, desc="Processing articles", unit="article"
-        ) as pbar:
-            for line in infile:
-                if "<page>" in line:
-                    article = ""
-                elif "</page>" in line:  # end of article
-                    Thread(target=save_article, args=(article, savedir)).start()
-                    pbar.update(1)  # Update progress bar for each processed article
-                else:
-                    article += line

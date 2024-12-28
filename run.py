@@ -1,11 +1,13 @@
+from pathlib import Path
+
 from src.download_file import download_simplewiki_dump
 from src.process_file import process_file_text
 
 
 def run():
-    # Step 1: Download the Simple Wikipedia dump
     raw_folder = "dump/raw"
-    processed_folder = "dump/processed/"
+    processed_folder = "dump/processed"
+    output_file = Path(processed_folder) / "data.parquet"
 
     # Download the dump file and get the metadata
     print("Starting download of the Simple Wikipedia dump...")
@@ -17,8 +19,8 @@ def run():
 
     # Step 2: Process the downloaded file
     print(f"Processing the dump file {file_path}...")
-    process_file_text(file_path, processed_folder)
-    print(f"Processing complete! Processed files saved in {processed_folder}")
+    process_file_text(file_path, output_file)
+    print(f"Processing complete! Processed file saved as {output_file}")
 
 
 # Main block to run the script
