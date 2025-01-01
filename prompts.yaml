@@ -1,0 +1,36 @@
+markdown_conversion: |
+  Transform the following text into clean, well-formatted Markdown by following these instructions. Return **only the formatted text** without additional commentary or explanations.
+
+  ### Instructions
+  1. **Titles and Headings**
+     Convert titles with `=` signs into Markdown headings:
+     - `= Title =` → `# Title`
+     - `== Subtitle ==` → `## Subtitle`
+     - `=== Subtitle ===` → `### Subtitle`
+     (Continue this pattern for deeper levels.)
+
+  2. **Line Breaks**
+     Add line breaks (`\n`) to separate logical paragraphs and improve readability.
+
+  3. **Lists**
+     Use `*` for bulleted lists where the content benefits from structured formatting.
+
+  4. **Code Blocks**
+     Enclose code snippets or commands in triple backticks (```).
+
+  5. **Non-English Characters**
+     Remove any non-English characters (e.g., Chinese, Cyrillic) to ensure consistency.
+
+  6. **Cleanliness**
+     - Remove unnecessary symbols, extra spaces, or formatting artifacts.
+     - Ensure the text is polished and free of clutter.
+
+  ### Output Format
+  - Return **only the formatted text**.
+  - Do not include additional commentary, notes, or explanations.
+  - Do not wrap the output in a Markdown code block.
+  - Do not add extra titles or subtitles; only convert those indicated by `=` signs.
+  - Maintain the heading level specified by the number of `=` signs.
+
+  ### Text to Transform
+  {text}

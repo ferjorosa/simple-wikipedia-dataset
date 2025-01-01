@@ -33,6 +33,7 @@ repos:
       - id: mypy
         additional_dependencies:
           - types-requests
+          - types-PyYAML
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2

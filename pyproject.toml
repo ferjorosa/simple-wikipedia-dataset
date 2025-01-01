@@ -11,12 +11,18 @@ dependencies = [
     "fastparquet>=2024.11.0",
     "html2text>=2024.2.26",
     "jupyter>=1.1.1",
+    "langchain-community>=0.3.13",
+    "langchain>=0.3.13",
     "pandas>=2.2.3",
+    "python-dotenv>=1.0.1",
     "requests>=2.32.3",
     "torch>=2.5.1",
     "tqdm>=4.67.1",
     "transformers>=4.47.1",
     "wikitextparser>=0.56.3",
+    "openai>=1.58.1",
+    "langchain-openai>=0.2.14",
+    "matplotlib>=3.10.0",
 ]
 
 [dependency-groups]

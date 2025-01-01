@@ -1,0 +1,12 @@
+# Paths
+raw_folder: "dump/raw"
+processed_folder: "dump/processed"
+output_file: "data.parquet"
+prompts_file: "prompts.yaml"
+
+# Model names
+model_hf: "deepseek-ai/DeepSeek-V3"
+model_openrouter: "deepseek/deepseek-chat"
+
+# Max output tokens allowed
+max_tokens: 7000
