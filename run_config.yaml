@@ -1,12 +1,14 @@
 # Paths
-raw_folder: "dump/raw"
-processed_folder: "dump/processed"
+data_folder: "data"
+raw_folder: "data/raw"
+processed_folder: "data/processed"
 output_file: "data.parquet"
+db_file: "database.db"
 prompts_file: "prompts.yaml"
 
 # Model names
 model_hf: "deepseek-ai/DeepSeek-V3"
 model_openrouter: "deepseek/deepseek-chat"
 
-# Max output tokens allowed
+# Number of tokens per chunk (for processing long articles)
 max_tokens: 7000

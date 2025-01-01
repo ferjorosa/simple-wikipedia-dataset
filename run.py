@@ -12,7 +12,7 @@ load_dotenv()
 
 def run():
     # Load paths from the YAML file
-    config_path = Path(__file__).parent / "config.yaml"
+    config_path = Path(__file__).parent / "run_config.yaml"
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 

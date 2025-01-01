@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0  # Use the latest version when setting up
+    rev: v5.0.0
     hooks:
       - id: check-docstring-first
       - id: check-merge-conflict
@@ -11,7 +11,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/psf/black
-    rev: 24.10.0  # Use the latest version
+    rev: 24.10.0
     hooks:
       - id: black
 
@@ -25,10 +25,10 @@ repos:
           - importlib-metadata>=6.0.0
         args:
           - --max-line-length=88
-          - "--ignore=I100,I201"
+          - "--ignore=I"
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.0  # Use the latest version
+    rev: v1.14.0
     hooks:
       - id: mypy
         additional_dependencies:
@@ -40,3 +40,4 @@ repos:
     hooks:
       - id: isort
         name: isort (python)
+        args: ["--settings-path", "pyproject.toml"]

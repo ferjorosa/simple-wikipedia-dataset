@@ -31,6 +31,7 @@ markdown_conversion: |
   - Do not wrap the output in a Markdown code block.
   - Do not add extra titles or subtitles; only convert those indicated by `=` signs.
   - Maintain the heading level specified by the number of `=` signs.
+  - Do not include a "References" section
 
   ### Text to Transform
   {text}

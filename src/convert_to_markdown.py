@@ -1,13 +1,12 @@
 import re
 from os import getenv
-from typing import Tuple
 
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from transformers import PreTrainedTokenizerFast
 
-from src.utils import count_tokens
+from src.utils.tokenizer import count_tokens
 
 
 def convert_text_to_markdown(
@@ -51,7 +50,7 @@ def convert_long_text_to_markdown(
     template: str,
     tokenizer: PreTrainedTokenizerFast,
     max_tokens: int,
-) -> Tuple[str, list[str]]:
+) -> str:
     """
     Processes the input text into Markdown by splitting it into sections,
     estimating the token count for each section, combining sections into
@@ -106,7 +105,7 @@ def convert_long_text_to_markdown(
     # Concatenate the processed sections back into a single text
     processed_text = "\n\n".join(processed_sections)
 
-    return processed_text, processed_sections
+    return processed_text
 
 
 def _divide_into_sections(text: str) -> list:

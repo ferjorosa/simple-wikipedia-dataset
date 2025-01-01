@@ -71,11 +71,16 @@ allow_redefinition = true
 
 [tool.isort]
 profile = "black"
-force_sort_within_sections = true
-sections = "STDLIB,THIRDPARTY,LOCALFOLDER"
-import_headings = "standard library,third-party imports,local imports"
-order_by_type = true
-force_single_line = false
-combine_as_imports = true
-line_length = 88
 src_paths = ["src"]
+line_length = 88
+
+#[tool.isort]
+#profile = "black"
+#force_sort_within_sections = true
+#sections = "STDLIB,THIRDPARTY,LOCALFOLDER"
+#import_headings = "standard library,third-party imports,local imports"
+#order_by_type = true
+#force_single_line = false
+#combine_as_imports = true
+#line_length = 88
+#src_paths = ["src"]

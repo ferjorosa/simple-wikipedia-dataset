@@ -51,6 +51,9 @@ def format_wiki_text(filename: Union[str, Path], savepath: Union[str, Path]) -> 
     # Convert list of articles to a DataFrame
     df = pd.DataFrame(articles)
 
+    # Id column as integer
+    df["id"] = df["id"].astype(int)
+
     # Save DataFrame as Parquet file
     df.to_parquet(savepath, index=False)
     print(f"Processed data saved to {savepath}")
